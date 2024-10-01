@@ -20,6 +20,7 @@ app.use(
     credentials: true, // يسمح بإرسال الكوكيز
   })
 );
+app.options('*', cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
