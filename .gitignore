@@ -1,0 +1,9 @@
+# Ignore .env file
+.env
+
+# Ignore .env.local file (if you're using it)
+.env.local
+
+# Other common files to ignore
+node_modules/
+.DS_Store
