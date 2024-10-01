@@ -12,42 +12,38 @@ const userSingInController = async (req, res) => {
     if (!password) {
       throw new Error("please provide password");
     }
-
     const user = await userModel.findOne({ email });
 
     if (!user) {
       throw new Error("user not found");
     }
-
     const checkPassword = await bcrypt.compare(password, user.password);
     if (checkPassword) {
       const tokenData = {
         _id: user._id,
         email: user.email,
       };
-
       const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, {
-        expiresIn: 60 * 60 * 8, // التوكين صالح لمدة 8 ساعات
+        expiresIn: 60 * 60 * 8,
       });
-
       const tokenOption = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // شغالة فقط في production
-        sameSite: "None", // للسماح بالكوكيز عبر دومينات مختلفة
+        secure: true,
+        sameSite: "None",
       };
 
       res.cookie("token", token, tokenOption).json({
-        message: "Login successfully!",
+        massage: "Loin successfully!",
         data: token,
         error: false,
         success: true,
       });
     } else {
-      throw new Error("Please check your password");
+      throw new Error("Please Check Your Password");
     }
   } catch (err) {
     return res.json({
-      message: err.message || err,
+      massage: err.message || err,
       error: true,
       success: false,
     });

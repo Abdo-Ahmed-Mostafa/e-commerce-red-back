@@ -6,12 +6,18 @@ const connectDB = require("./config/db");
 const router = require("./routes/index.js");
 
 const app = express();
+const allowedOrigins = ["https://e-commerce-red-front.vercel.app"];
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      callback(null, true);
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // يسمح بالاتصال إذا كان الدومين مسموح أو لو الطلب جاي من localhost
+      } else {
+        callback(new Error("Not allowed by CORS")); // يمنع أي دومين غير مسموح
+      }
     },
-    credentials: true,
+    credentials: true, // يسمح بإرسال الكوكيز
   })
 );
 app.use(express.json({ limit: "10mb" }));
